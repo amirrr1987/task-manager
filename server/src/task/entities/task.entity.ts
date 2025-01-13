@@ -14,6 +14,14 @@ export class TaskEntity {
   label: string;
 
   @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+    comment: 'The label of the task',
+  })
+  description: string;
+
+  @Column({
     type: 'enum',
     enum: ['TODO', 'DOING', 'DONE'],
     default: 'TODO',

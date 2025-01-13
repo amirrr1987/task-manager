@@ -10,6 +10,7 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { FindOneTaskDto } from './dto/findOne-task.dto';
 
 @Controller('task')
 export class TaskController {
@@ -25,9 +26,9 @@ export class TaskController {
     return this.taskService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskService.findOne(+id);
+  @Post('search')
+  findOneBy(@Body('id') dto: FindOneTaskDto) {
+    return this.taskService.findOneBy(dto);
   }
 
   @Patch(':id')
