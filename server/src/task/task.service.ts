@@ -25,8 +25,12 @@ export class TaskService {
     return await this.taskRepository.findOneBy(dto);
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto) {
-    return await this.taskRepository.update(id, updateTaskDto);
+  async update(updateTaskDto: UpdateTaskDto) {
+    const result = await this.taskRepository.update(
+      updateTaskDto.id,
+      updateTaskDto,
+    );
+    return result.affected > 0 ? 'Success' : 'Not success';
   }
 
   async remove(id: number) {
