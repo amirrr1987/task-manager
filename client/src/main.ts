@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'nprogress/nprogress.css'
+// import * as bootstrap from 'bootstrap'
 // import './assets/main.css'
 
 import { createApp } from 'vue'

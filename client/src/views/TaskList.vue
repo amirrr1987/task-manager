@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { onMounted,ref } from 'vue'
-import axios from 'axios'
-const tasks = ref([])
+import { onMounted } from 'vue'
+import { useTaskStore } from '@/stores/taskStore'
+const taskStore = useTaskStore()
 onMounted(async () => {
-  try {
-    const response = await axios.get('http://localhost:6000/api/tasks')
-    tasks.value = response.data
-  } catch (error) {
-    console.error('Error fetching tasks:', error)
-  }
+  await taskStore.getTasks()
 })
 </script>
 
 <template>
   <div class="d-grid gap-4">
-    <div class="card" v-for="item in tasks" :key="item">
+    <div class="card" v-for="task in taskStore.tasks" :key="task.id">
       <div class="card-body">
-        <h4 class="">Title</h4>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum, molestiae.</p>
-        <div class="btn btn-success">Done</div>
+        <h4 class="">{{ task.label }}</h4>
+        <p>{{ task.description }}</p>
+        <div
+          class="btn"
+          :class="{ 'btn-success': task.state === 'DONE', 'btn-error': task.state === 'DOING' }"
+        >
+          {{ task.state }}
+        </div>
       </div>
     </div>
   </div>
