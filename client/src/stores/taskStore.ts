@@ -22,5 +22,29 @@ export const useTaskStore = defineStore('task', () => {
       nprogress.done()
     }
   }
-  return { task, tasks, getTasks }
+  const addTask = async () => {
+    try {
+      const data = await axios.post('http://localhost:5500/api/tasks', task.value)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const editTask = async () => {
+    try {
+      const data = await axios.post('http://localhost:5500/api/tasks', task.value)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const deleteTask = async (taskId: number) => {
+    try {
+      const data = await axios.delete(`http://localhost:5500/api/tasks/${taskId}`)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return { task, tasks, getTasks, addTask, editTask, deleteTask }
 })

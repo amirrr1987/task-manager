@@ -5,6 +5,11 @@ const taskStore = useTaskStore()
 onMounted(async () => {
   await taskStore.getTasks()
 })
+
+const deleteHandler = async (taskId: number) => {
+  await taskStore.deleteTask(taskId)
+  await taskStore.getTasks()
+}
 </script>
 
 <template>
@@ -19,6 +24,7 @@ onMounted(async () => {
         >
           {{ task.state }}
         </div>
+        <div class="btn btn-error" @click="deleteHandler(task.id)">X</div>
       </div>
     </div>
   </div>
