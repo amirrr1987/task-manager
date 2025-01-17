@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/stores/taskStore'
 import { StateEnum } from '@/types'
-import { onMounted } from 'vue'
 
 const taskStore = useTaskStore()
 
@@ -9,11 +8,6 @@ const onChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   taskStore.task.state = (target.value as StateEnum) ?? StateEnum.TODO
 }
-
-onMounted(() => {
-  taskStore.task.state = StateEnum.TODO
-})
-const addTask = () => {}
 </script>
 <template>
   {{ taskStore.task }}
@@ -37,8 +31,8 @@ const addTask = () => {}
         :rows="5"
       />
     </div>
-    <div class="col-12">
-      <label class="form-control-label mb-2"> Choose state: </label>
+    <label class="form-control-label"> Choose state: </label>
+    <div class="col-12 d-flex gap-4">
       <div class="form-check">
         <input
           @change="onChange"
@@ -74,8 +68,9 @@ const addTask = () => {}
         />
       </div>
     </div>
-    <div class="col-12">
-      <button type="submit" class="btn btn-primary mb-3">Add task</button>
+    <div class="col-12 d-flex justify-content-center gap-4">
+      <button type="submit" class="btn btn-primary">Add task</button>
+      <button type="reset" class="btn btn-secondary" @click="taskStore.resetTask">Add task</button>
     </div>
   </form>
 </template>
