@@ -1,11 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Task } from '@/types'
+import { StateEnum, type Task } from '@/types'
 import axios from 'axios'
 import nprogress from 'nprogress'
 
 export const useTaskStore = defineStore('task', () => {
-  const task = ref<Task>({} as Task)
+  const task = ref<Task>({
+    state: StateEnum.TODO,
+  } as Task)
   const tasks = ref<Task[]>([])
   const getTasks = async () => {
     nprogress.start()
@@ -46,5 +48,10 @@ export const useTaskStore = defineStore('task', () => {
       console.log(error)
     }
   }
-  return { task, tasks, getTasks, addTask, editTask, deleteTask }
+  const resetTask = () => {
+    task.value = {
+      state: StateEnum.TODO,
+    } as Task
+  }
+  return { task, tasks, getTasks, addTask, editTask, deleteTask, resetTask }
 })
