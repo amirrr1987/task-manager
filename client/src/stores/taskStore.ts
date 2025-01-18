@@ -34,7 +34,7 @@ export const useTaskStore = defineStore('task', () => {
   }
   const editTask = async () => {
     try {
-      const data = await axios.post('http://localhost:5500/api/tasks', task.value)
+      const data = await axios.patch('http://localhost:5500/api/tasks', task.value)
       console.log(data)
     } catch (error) {
       console.log(error)

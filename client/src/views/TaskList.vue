@@ -17,7 +17,6 @@ const task = ref<TaskModel>({} as TaskModel)
 const deleteModal = ref<Modal | null>(null)
 const openDeleteModal = async (id: number) => {
   taskId.value = id
-  task.value = await taskStore.getTaskById(id)
   if (!deleteModal.value) {
     const modalElement = document.getElementById('deleteModal')
     if (modalElement) {
@@ -30,6 +29,7 @@ const openDeleteModal = async (id: number) => {
   deleteModal.value?.show()
 }
 const deleteHandler = async () => {
+  if (!taskId.value) return
   await taskStore.deleteTask(taskId.value)
   await taskStore.getTasks()
 }
@@ -47,7 +47,7 @@ const editHandler = async (id: number) => {
 </script>
 
 <template>
-  <DeleteModal :task="task" @ok="deleteHandler" @cancel="deleteModal.value?.show()" />
+  <DeleteModal :task="task" @ok="deleteHandler" @cancel="deleteModal?.show()" />
   <div class="d-grid gap-4">
     <div class="card" v-for="task in taskStore.tasks" :key="task.id">
       <div class="card-body">

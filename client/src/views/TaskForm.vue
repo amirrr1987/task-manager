@@ -2,12 +2,16 @@
 import { useTaskStore } from '@/stores/taskStore'
 import { StateEnum } from '@/types'
 import { useRouter, useRoute } from 'vue-router'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 const taskStore = useTaskStore()
 
+const taskId = computed(() => {
+  return Number(route.params.id ?? 0) as number
+})
 const route = useRoute()
-onMounted(() => {
-  route
+onMounted(async () => {
+  if (!taskId.value) return
+  taskStore.task = await taskStore.getTaskById(taskId.value)
 })
 
 const onChange = (event: Event) => {
@@ -17,8 +21,13 @@ const onChange = (event: Event) => {
 
 const router = useRouter()
 const saveHandler = async () => {
-  await taskStore.addTask()
+  if (taskId.value) {
+    await taskStore.editTask()
+  } else {
+    await taskStore.addTask()
+  }
   router.push({ name: 'TheListTask' })
+  taskStore.resetTask()
 }
 const cancelHandler = () => {
   taskStore.resetTask()
@@ -84,7 +93,7 @@ const cancelHandler = () => {
       </div>
     </div>
     <div class="col-12 d-flex justify-content-start gap-4">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary">{{ taskId ? 'Save' : 'Create' }}</button>
       <button type="reset" class="btn" @click="cancelHandler">Cancel</button>
     </div>
   </form>
