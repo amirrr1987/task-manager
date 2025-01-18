@@ -10,7 +10,9 @@ const taskId = computed(() => {
 })
 const route = useRoute()
 onMounted(async () => {
-  if (!taskId.value) return
+  if (!taskId.value) {
+    taskStore.task.state = StateEnum.TODO
+  }
   taskStore.task = await taskStore.getTaskById(taskId.value)
 })
 
@@ -35,7 +37,8 @@ const cancelHandler = () => {
 }
 </script>
 <template>
-  <h3 class="mt-5 mb-3">Enter your new task</h3>
+  {{ taskStore.task }}
+  <h3 class="mb-3">Enter your new task</h3>
   <form class="row g-3" @submit.prevent="saveHandler">
     <div class="col-12">
       <label class="form-control-label"> Title: {{}}</label>
@@ -64,8 +67,8 @@ const cancelHandler = () => {
           type="radio"
           name="State"
           id="Todo"
-          value="TODO"
-          checked
+          :value="StateEnum.TODO"
+          :checked="taskStore.task.state === StateEnum.TODO"
         />
         <label class="form-check-label" for="Todo"> Todo </label>
       </div>
@@ -77,7 +80,8 @@ const cancelHandler = () => {
           type="radio"
           name="State"
           id="Doing"
-          value="DOING"
+          :value="StateEnum.DOING"
+          :checked="taskStore.task.state === StateEnum.DOING"
         />
       </div>
       <div class="form-check">
@@ -88,7 +92,8 @@ const cancelHandler = () => {
           type="radio"
           name="State"
           id="Done"
-          value="DONE"
+          :value="StateEnum.DONE"
+          :checked="taskStore.task.state === StateEnum.DONE"
         />
       </div>
     </div>

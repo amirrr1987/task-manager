@@ -5,9 +5,7 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 
 export const useTaskStore = defineStore('task', () => {
-  const task = ref<TaskModel>({
-    state: StateEnum.TODO,
-  } as TaskModel)
+  const task = ref<TaskModel>({} as TaskModel)
   const tasks = ref<TaskModel[]>([])
   const getTasks = async () => {
     nprogress.start()

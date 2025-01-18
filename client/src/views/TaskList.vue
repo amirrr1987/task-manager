@@ -36,7 +36,7 @@ const deleteHandler = async () => {
 const router = useRouter()
 
 const editHandler = async (id: number) => {
-  taskStore.task = await taskStore.getTaskById(id)
+  // taskStore.task = await taskStore.getTaskById(id)
   router.push({
     name: 'TheEditTask',
     params: {
@@ -47,6 +47,7 @@ const editHandler = async (id: number) => {
 </script>
 
 <template>
+    <h3 class="mb-3">Task list:</h3>
   <DeleteModal :task="task" @ok="deleteHandler" @cancel="deleteModal?.show()" />
   <div class="d-grid gap-4">
     <div class="card" v-for="task in taskStore.tasks" :key="task.id">
