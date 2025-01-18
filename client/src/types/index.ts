@@ -4,7 +4,7 @@ export enum StateEnum {
   DOING = 'DOING',
   DONE = 'DONE',
 }
-export interface Task {
+export interface TaskModel {
   id: number
   label: string
   description: string

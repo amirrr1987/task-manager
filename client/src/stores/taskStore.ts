@@ -1,14 +1,14 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { StateEnum, type Task } from '@/types'
+import { StateEnum, type TaskModel } from '@/types'
 import axios from 'axios'
 import nprogress from 'nprogress'
 
 export const useTaskStore = defineStore('task', () => {
-  const task = ref<Task>({
+  const task = ref<TaskModel>({
     state: StateEnum.TODO,
-  } as Task)
-  const tasks = ref<Task[]>([])
+  } as TaskModel)
+  const tasks = ref<TaskModel[]>([])
   const getTasks = async () => {
     nprogress.start()
     try {
@@ -40,6 +40,14 @@ export const useTaskStore = defineStore('task', () => {
       console.log(error)
     }
   }
+  const getTaskById = async (id: number) => {
+    try {
+      const { data } = await axios.post('http://localhost:5500/api/tasks/search', { id })
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const deleteTask = async (taskId: number) => {
     try {
       const data = await axios.delete(`http://localhost:5500/api/tasks/${taskId}`)
@@ -51,7 +59,7 @@ export const useTaskStore = defineStore('task', () => {
   const resetTask = () => {
     task.value = {
       state: StateEnum.TODO,
-    } as Task
+    } as TaskModel
   }
-  return { task, tasks, getTasks, addTask, editTask, deleteTask, resetTask }
+  return { task, tasks, getTasks, addTask, editTask, deleteTask, resetTask, getTaskById }
 })

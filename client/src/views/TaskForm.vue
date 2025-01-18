@@ -1,20 +1,35 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/stores/taskStore'
 import { StateEnum } from '@/types'
-
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 const taskStore = useTaskStore()
+
+const route = useRoute()
+onMounted(() => {
+  route
+})
 
 const onChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   taskStore.task.state = (target.value as StateEnum) ?? StateEnum.TODO
 }
+
+const router = useRouter()
+const saveHandler = async () => {
+  await taskStore.addTask()
+  router.push({ name: 'TheListTask' })
+}
+const cancelHandler = () => {
+  taskStore.resetTask()
+  router.push({ name: 'TheListTask' })
+}
 </script>
 <template>
-  {{ taskStore.task }}
-  <h1 class="mt-5 mb-3">Enter your new task</h1>
-  <form class="row g-3" @submit.prevent="taskStore.addTask">
+  <h3 class="mt-5 mb-3">Enter your new task</h3>
+  <form class="row g-3" @submit.prevent="saveHandler">
     <div class="col-12">
-      <label class="form-control-label"> Title: </label>
+      <label class="form-control-label"> Title: {{}}</label>
       <input
         v-model="taskStore.task.label"
         type="text"
@@ -32,7 +47,7 @@ const onChange = (event: Event) => {
       />
     </div>
     <label class="form-control-label"> Choose state: </label>
-    <div class="col-12 d-flex gap-4">
+    <div class="col-12 d-flex gap-4 mb-4">
       <div class="form-check">
         <input
           @change="onChange"
@@ -68,9 +83,9 @@ const onChange = (event: Event) => {
         />
       </div>
     </div>
-    <div class="col-12 d-flex justify-content-center gap-4">
-      <button type="submit" class="btn btn-primary">Add task</button>
-      <button type="reset" class="btn btn-secondary" @click="taskStore.resetTask">Add task</button>
+    <div class="col-12 d-flex justify-content-start gap-4">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="reset" class="btn" @click="cancelHandler">Cancel</button>
     </div>
   </form>
 </template>

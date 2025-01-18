@@ -29,7 +29,7 @@ export class TaskController {
   }
 
   @Post('search')
-  findOneBy(@Body('id') dto: FindOneTaskDto) {
+  findOneBy(@Body() dto: FindOneTaskDto) {
     return this.taskService.findOneBy(dto);
   }
 
