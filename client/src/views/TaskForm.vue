@@ -10,10 +10,11 @@ const taskId = computed(() => {
 })
 const route = useRoute()
 onMounted(async () => {
-  if (!taskId.value) {
+  if (taskId.value <= 0) {
     taskStore.task.state = StateEnum.TODO
+  } else {
+    taskStore.task = await taskStore.getTaskById(taskId.value)
   }
-  taskStore.task = await taskStore.getTaskById(taskId.value)
 })
 
 const onChange = (event: Event) => {
@@ -23,7 +24,11 @@ const onChange = (event: Event) => {
 
 const router = useRouter()
 const saveHandler = async () => {
-  if (taskId.value) {
+  console.log('taskId.value')
+  console.log(taskId.value)
+  console.log('taskId.value')
+
+  if (taskId.value > 0) {
     await taskStore.editTask()
   } else {
     await taskStore.addTask()
@@ -37,7 +42,6 @@ const cancelHandler = () => {
 }
 </script>
 <template>
-  {{ taskStore.task }}
   <h3 class="mb-3">Enter your new task</h3>
   <form class="row g-3" @submit.prevent="saveHandler">
     <div class="col-12">

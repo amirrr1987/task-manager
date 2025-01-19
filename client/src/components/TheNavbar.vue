@@ -1,7 +1,15 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const searchKey = ref('')
+const searchHandler = () => {
+  console.log('searchHandler',searchKey.value)
+}
+</script>
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <RouterLink class="navbar-brand" to="/">Navbar</RouterLink>
+      <RouterLink class="navbar-brand" to="/">Task management</RouterLink>
       <button
         class="navbar-toggler"
         type="button"
@@ -28,8 +36,9 @@
             >
           </li>
         </ul>
-        <form class="d-flex" role="search">
+        <form class="d-flex" role="search" @submit.prevent="searchHandler">
           <input
+            v-model="searchKey"
             class="form-control me-2"
             type="search"
             placeholder="Search task"
