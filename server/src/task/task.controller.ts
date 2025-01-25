@@ -13,34 +13,43 @@ import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { FindOneTaskDto } from './dto/findOne-task.dto';
+import { ITaskController } from './interfaces/task.controller.interface';
 
 @Controller('tasks')
-export class TaskController {
+export class TaskController implements ITaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.taskService.create(createTaskDto);
+  createTask(@Body() createTaskDto: CreateTaskDto) {
+    return this.taskService.createTask(createTaskDto);
   }
 
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  findTaskList() {
+    return this.taskService.findTaskList();
+  }
+
+  @Get(':id')
+  findTaskById(@Param('id') id: number) {
+    return this.taskService.findTaskById(id);
   }
 
   @Post('search')
-  findOneBy(@Body() dto: FindOneTaskDto) {
-    return this.taskService.findOneBy(dto);
+  searchTask(@Body() dto: FindOneTaskDto) {
+    return this.taskService.searchTask(dto);
   }
 
-  @Patch()
+  @Patch(':id')
   @UsePipes(new ValidationPipe())
-  update(@Body() updateTaskDto: UpdateTaskDto) {
-    if (updateTaskDto.id) return this.taskService.update(updateTaskDto);
+  updateTaskById(
+    @Param('id') id: number,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    return this.taskService.updateTaskById(id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+  deleteTaskById(@Param('id') id: number) {
+    return this.taskService.deleteTaskById(id);
   }
 }

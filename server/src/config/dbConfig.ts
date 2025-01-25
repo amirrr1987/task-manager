@@ -2,8 +2,12 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 export const pgConfig: PostgresConnectionOptions = {
   type: 'postgres',
-  url: 'postgresql://neondb_owner:UyS4x2rjskVd@ep-snowy-cherry-a5ni9w3w.us-east-2.aws.neon.tech/neondb?sslmode=require',
-  port: 3306,
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT, 10) || 5432,
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'postgres',
+  database: process.env.DB_DATABASE || 'task-manager',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: true, // only "true" develop mod
+  synchronize: true,
+  logging: process.env.NODE_ENV === 'development',
 };
