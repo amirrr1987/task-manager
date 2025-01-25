@@ -6,6 +6,7 @@ import { Modal } from 'bootstrap'
 import type { TaskModel } from '@/types'
 import { useRouter } from 'vue-router'
 import { StateEnum } from '@/types'
+import Empty from "@/components/Empty.vue";
 const taskStore = useTaskStore()
 
 onMounted(async () => {
@@ -75,6 +76,7 @@ const stateColor = (state: StateEnum) => {
       </div>
     </template>
     <template v-else>
+    <template v-if="taskStore.tasks.length > 0">
       <div class="card" v-for="(task, index) in taskStore.tasks" :key="task.id">
         <div class="card-body">
           <div class="d-flex justify-content-between">
@@ -96,6 +98,10 @@ const stateColor = (state: StateEnum) => {
           </div>
         </div>
       </div>
+    </template>
+      <template v-else>
+      <Empty />
+      </template>
     </template>
   </div>
 </template>
